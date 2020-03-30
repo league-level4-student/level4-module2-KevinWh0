@@ -177,9 +177,30 @@ public class StringMethods {
 	// of String substring and the final occurrence
 	// You can assume that substring will appear at least twice
 	public static int distance(String s, String substring) {
+		
+		
+		int firstOccur = -1;
+		for (int i = 0; i < s.length(); i++) {
+			if(s.substring(0,i).contains(substring)) {
+				firstOccur = i;
+				//System.out.println("Found First @ loc " + i);
+				break;
+			}
+		}
+		//System.out.println("Exited first loop, proceding to last loop");
+
+		int lastOccur = -1;
+		for (int i = s.length(); i > 0; i--) {
+			if(s.substring(i).contains(substring)) {
+				lastOccur = i;
+				//System.out.println("Found Last @ loc " + i);
+				break;
+			}
+		}
+		//System.out.println("Exited last loop, returning " + Math.abs(firstOccur - lastOccur));
 
 		
-		return 0;
+		return Math.abs(firstOccur - lastOccur);
 	}
 
 
@@ -188,19 +209,44 @@ public class StringMethods {
 	// HINT: ignore/remove all punctuation and spaces in the String
 	public static boolean palindrome(String s) {
 		String str = s.replaceAll(" ", "");
-		//try {
-		//}catch(Exception e) {}
-		str.replaceAll("!", "");
-		str.replaceAll(".", "");
-		str.replace("?", "");
 
+		//str.replace("?", "");
 		String newStr = "";
-		for (int i = str.length(); i > 0; i--) {
-			newStr = newStr + str.charAt(i-1);
+
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(str);
+		if(sb.charAt(sb.length()-1) == '?') {
+			sb.deleteCharAt(sb.length()-1);
 		}
+		for (int i = 0; i < sb.length(); i++) {
+			try {
+				if(sb.charAt(i) == '?') {
+					sb.deleteCharAt(i);
+				}
+				if(sb.charAt(i) == ',') {
+					sb.deleteCharAt(i);
+				}
+				if(sb.charAt(i) == '.') {
+					sb.deleteCharAt(i);
+				}
+				if(sb.charAt(i) == ':') {
+					sb.deleteCharAt(i);
+				}
+			}catch(Exception e) {}
+		}
+		newStr = sb.toString();
+		sb.reverse();
+		//System.out.println(sb.toString());
 		
-		System.out.println(newStr + " " + str);
-		if(newStr.equalsIgnoreCase(str))
+		
+
+//		for (int i = str.length(); i > 0; i--) {
+//			newStr = newStr + str.charAt(i-1);
+//		}
+		
+		//System.out.println(newStr + " " + str);
+		if(newStr.equalsIgnoreCase(sb.toString()))
 		return true;
 		else
 		return false;
